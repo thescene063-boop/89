@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>หนังทั้งหมด | The Scene 89</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+   
+  
+
+    @keyframes ambientMove {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-20px) scale(1.1); }
+    }
+
+    /* --- Top Bar --- */
+    .top-follow-bar {
+      background-color: #000000;
+      padding: 10px 0;
+      font-size: 13px;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .follow-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .follow-text { opacity: 0.9; }
+    .follow-text i { margin-right: 5px; }
+
+    .follow-btn {
+      background-color: #ffffff;
+      color: #000000;
+      padding: 4px 12px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 11px;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .follow-btn:hover { background-color: #e6e6e6; }
+
+    /* --- Header Section --- */
+    .page-header {
+      padding: 30px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 24px; /* ปรับลดลงนิดหน่อยเผื่อมือถือ */
+        background: linear-gradient(to right, #ff2626, #ff5e00);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);
+    }
+    .page-header h1 i { margin-right: 8px; color: #e50914; }
+
+    /* --- Action Container --- */
+    .action-container {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 650px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap; /* ให้ปัดลงบรรทัดใหม่ได้ถ้าจอเล็กมาก */
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+   /* =========================================
+   ✨ ชุดอัปเกรดเอฟเฟกต์ช่องค้นหา (Luxury Glow) ✨
+   ========================================= */
+
+/* ตั้งค่ากล่อง Wrapper เพื่อให้ใช้ :focus-within ได้ */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  /* เพิ่ม transition ให้กล่องรวม */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* เมื่อมีการคลิกข้างใน search-wrapper ให้เด้งขยายขึ้นนิดนึง */
+.search-wrapper:focus-within {
+  transform: scale(1.03); /* ขยาย 3% */
+}
+
+/* --- ไอคอนแว่นขยาย --- */
+.search-icon-inside {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa; /* สีเริ่มต้น (เทา) */
+  font-size: 15px;
+  pointer-events: none;
+  z-index: 2;
+  /* เพิ่ม transition ให้เปลี่ยนสีสมูทๆ */
+  transition: all 0.3s ease;
+}
+
+/* ✨ เมื่อคลิกช่องค้นหา ให้ไอคอนเปลี่ยนสีตาม ✨ */
+.search-wrapper:focus-within .search-icon-inside {
+  color: #e50914; /* เปลี่ยนเป็นสีแดง */
+  /* เพิ่มเงาให้ไอคอนดูเรืองแสง */
+  text-shadow: 0 0 10px rgba(229, 9, 20, 0.8);
+}
+
+/* --- ช่องกรอกข้อความ --- */
+.movie-search {
+  width: 100%;
+  padding: 14px 20px 14px 50px !important;
+  border-radius: 50px;
+  /* ขอบเริ่มต้นบางๆ สีจางๆ */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-family: 'Prompt', sans-serif;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  /* ใช้ transition แบบเด้งๆ (cubic-bezier) */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ✨ สถานะตอนคลิก (Focus State) ✨ */
+.movie-search:focus {
+  /* เปลี่ยนสีพื้นหลังให้สว่างขึ้น */
+  background: rgba(255, 255, 255, 0.12);
+  /* ขอบหนาขึ้นเป็น 2px และเปลี่ยนเป็นสีแดง */
+  border: 2px solid #e50914;
+  /* ใส่เงา 2 ชั้น (แสงฟุ้งรอบนอก + แสงเรืองข้างใน) */
+  box-shadow: 
+    0 0 20px rgba(229, 9, 20, 0.4), /* แสงฟุ้งสีแดงรอบนอก */
+    inset 0 0 15px rgba(229, 9, 20, 0.2); /* แสงเรืองข้างในกล่อง */
+}
+
+    .movie-search:focus {
+        border-color: #e50914;
+        background: rgba(255,255,255,0.12);
+    }
+
+    .btn-subscribe-main {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #b20710 0%, #e50914 50%, #ff4b2b 100%);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+      transition: 0.3s;
+    }
+    .btn-subscribe-main:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    /* --- Movie Grid (Desktop Default) --- */
+    .movie-grid {
+      padding: 20px 40px 80px;
+      display: grid;
+      /* Desktop: Auto fill ขั้นต่ำ 160px */
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+
+    /* 🔥🔥 Mobile Optimization (ปรับตรงนี้เพื่อประหยัดที่) 🔥🔥 */
+    @media (max-width: 600px) {
+      .movie-grid {
+        /* บังคับให้ขนาดเล็กลงเหลือ 100px เพื่อให้จอ 360px ใส่ได้ 3 รูป */
+        grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); 
+        gap: 10px;       /* ลดช่องว่างให้ชิดกัน */
+        padding: 10px 15px 60px; /* ลดขอบข้างจอ */
+      }
+
+      .movie-card {
+        border-radius: 10px; /* ลดความโค้งมนนิดหน่อย */
+      }
+
+      .movie-card img {
+        height: 160px !important; /* ลดความสูงรูปไม่ให้ยาวเกินไป */
+      }
+
+      .movie-title {
+        font-size: 11px !important; /* ลดขนาดตัวหนังสือ */
+        padding: 25px 5px 8px !important;
+      }
+      
+      .join-badge {
+        font-size: 9px;
+        padding: 2px 8px;
+        top: 6px; 
+        right: 6px;
+      }
+
+      /* ปรับส่วนหัวบนมือถือ */
+      .page-header {
+        padding: 20px 15px 10px;
+      }
+      
+      .btn-subscribe-main {
+        /* บนมือถือให้ปุ่มเต็มความกว้างจะได้กดง่าย */
+        width: 100%; 
+        justify-content: center;
+      }
+      
+      .search-wrapper {
+        min-width: 100%; /* ช่องค้นหาเต็มจอ */
+      }
+    }
+
+    .movie-card {
+      background: linear-gradient(to bottom, #1e1e1e, #141414);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      transition: 0.4s;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      aspect-ratio: 2/3;
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 100%; /* ให้ยืดตาม Grid */
+      object-fit: cover;
+      display: block;
+    }
+
+    .movie-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 40px 10px 15px;
+      text-align: center;
+      font-size: 13px;
+      background: linear-gradient(to top, rgba(0,0,0,1) 10%, transparent 100%);
+      box-sizing: border-box;
+    }
+
+    .join-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #ff4b2b, #e50914);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0; /* ซ่อนไว้ก่อน */
+      transform: translateY(-5px);
+      transition: 0.3s;
+    }
+    
+    /* บนมือถือให้โชว์ป้าย Join เลย ไม่ต้องรอ Hover (เพราะมือถือไม่มี Hover) */
+    @media (max-width: 768px) {
+       .join-badge { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* บนคอมให้ Hover ถึงขึ้น */
+    @media (min-width: 769px) {
+       .movie-card:hover .join-badge { opacity: 1; transform: translateY(0); }
+       .movie-card:hover { transform: translateY(-8px); }
+    }
+
+    .movie-link { text-decoration: none; color: inherit; display: block; }
+  </style>
+</head>
+
+<body>
+ <div id="navbar"></div>
+
+ 
+  <div class="top-follow-bar">
+    <div class="follow-content">
+      <span class="follow-text">
+        <i class="fa-brands fa-x-twitter"></i> ติดตามข่าว @Thescene89
+      </span>
+      <a href="https://x.com/TheScene89" target="_blank" class="follow-btn">
+        <i class="fa-solid fa-plus"></i> ติดตาม
+      </a>
+    </div>
+  </div>
+  
+ 
+
+  <div class="page-header">
+    <h1><i class="fa-solid fa-clapperboard"></i> หนังทั้งหมด</h1>
+    
+    <div class="action-container">
+      
+      <div class="search-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+        <input
+          id="searchInput"
+          class="movie-search"
+          placeholder="ค้นหาชื่อหนัง..."
+          onkeyup="searchMovie()"
+        >
+      </div>
+
+      <a href="payment.html" class="btn-subscribe-main">
+        <i class="fa-solid fa-crown"></i> สมัครสมาชิก
+      </a>
+
+    </div>
+  </div>
+
+  <div class="movie-grid" id="movieGrid"></div>
+
+<script type="module">
+    import { db } from "./js/firebase.js";
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+    const movieGrid = document.querySelector(".movie-grid");
+    // ดึงข้อมูลหนังทั้งหมด
+    const snap = await getDocs(collection(db, "movies"));
+
+    if (snap.empty) {
+      movieGrid.innerHTML = "<p style='text-align:center; width:100%; opacity: 0.7;'>ยังไม่มีหนังในระบบ</p>";
+    } else {
+      
+      // 1. ดึงข้อมูลออกมาใส่ Array ปกติก่อน เพื่อให้เราสั่งเรียงได้
+      let movies = [];
+      snap.forEach(doc => {
+          movies.push(doc.data());
+      });
+
+      // 2. สั่งเรียงข้อมูลตามเวลา (createdAt) จาก มาก -> น้อย (ใหม่ -> เก่า)
+      // (b.createdAt || 0) คือถ้าหนังเรื่องไหนไม่มีเวลาบันทึกไว้ ให้ถือว่าเป็น 0 (เก่าสุด)
+      movies.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      // 3. วนลูปสร้าง HTML จากรายการที่ "เรียงเสร็จแล้ว"
+      let allCards = ""; 
+      movies.forEach(m => {
+        allCards += `
+          <a href="${m.link}" target="_blank" class="movie-link" data-title="${m.title}">
+            <div class="movie-card">
+              <img src="${m.poster}" alt="${m.title}" loading="lazy">
+              <div class="join-badge"><i class="fa-solid fa-lock"></i> สมัครสมาชิก</div>
+              <div class="movie-title">${m.title}</div>
+            </div>
+          </a>
+        `;
+      });
+
+      // 4. แสดงผลทีเดียว
+      movieGrid.innerHTML = allCards;
+    }
+</script>
+
+  <script>
+    function searchMovie() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      document.querySelectorAll(".movie-link").forEach(m => {
+        m.style.display = m.dataset.title.toLowerCase().includes(input) ? "" : "none";
+      });
+    }
+  </script>
+
+  <script src="js/navbar.js"></script>
+</body>
+</html>

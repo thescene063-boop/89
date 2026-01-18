@@ -1,0 +1,422 @@
+
+/* ===== Global Reset ===== */
+* {
+  box-sizing: border-box;
+  font-family: 'Prompt', sans-serif;
+}
+
+/* กัน navbar ขยับเวลา scroll */
+html {
+  overflow-y: scroll;
+}
+
+/* ===== Body Background (คลื่น) ===== */
+body {
+  margin: 0;
+  padding-top: 60px; /* เท่าความสูง navbar */
+  min-height: 100vh;
+  color: #fff;
+
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.06), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.05), transparent 40%),
+    linear-gradient(270deg, #000000, #000000, #000000);
+
+  background-size: 400% 400%;
+ 
+}
+
+
+/* ===== Floating Particles (BRIGHT + FASTER) ===== */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  background-image:
+    /* เม็ดเล็ก */
+    radial-gradient(1px 1px at 5% 10%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 15% 30%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.65), transparent),
+    radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 45% 20%, rgba(255,255,255,0.65), transparent),
+    radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 65% 40%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 75% 60%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 85% 30%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 95% 70%, rgba(255,255,255,0.65), transparent),
+
+    /* เม็ดกลาง */
+    radial-gradient(2px 2px at 10% 90%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(2px 2px at 30% 15%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 50% 50%, rgba(255,255,255,0.75), transparent),
+    radial-gradient(2px 2px at 70% 20%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 90% 45%, rgba(255,255,255,0.75), transparent),
+
+    /* เม็ดใหญ่ (มี glow) */
+    radial-gradient(3px 3px at 20% 40%, rgba(255,255,255,0.85), transparent),
+    radial-gradient(3px 3px at 60% 10%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(3px 3px at 80% 80%, rgba(255,255,255,0.85), transparent);
+
+  /* เพิ่มความสว่างรวม */
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.35));
+
+  /* เร็วขึ้น */
+  animation: floatParticlesFast 25s linear infinite;
+}
+
+
+
+@keyframes floatParticles {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-250px); }
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom, #000, rgba(0,0,0,0.85));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.nav-center a {
+  margin: 0 14px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+  opacity: 0.8;
+  transition: 0.25s;
+}
+
+.nav-center a:hover {
+  opacity: 1;
+  color: #ff2a2a;
+}
+
+.subscribe-btn {
+  padding: 6px 16px;
+  background: linear-gradient(135deg, #ff1e1e, #e50914);
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+/* ===== Content Layer (อยู่เหนือเม็ด) ===== */
+.container,
+main,
+.page-header,
+.movie-grid {
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== Card (หน้าแรก) ===== */
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 40px auto 0;
+  padding: 38px 26px;
+  text-align: center;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.02)
+  );
+
+  backdrop-filter: blur(14px);
+  border-radius: 26px;
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 30px 60px rgba(229,9,20,0.18);
+}
+
+/* ===== Buttons ===== */
+.link {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  text-decoration: none;
+  color: #fff;
+
+  background: linear-gradient(135deg, #e50914, #ff4b2b);
+  padding: 15px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(229,9,20,0.45);
+  filter: brightness(1.05);
+}
+
+.link:active {
+  transform: scale(0.97);
+  box-shadow: 0 6px 14px rgba(229,9,20,0.35);
+}
+
+@keyframes floatParticlesFast {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-350px);
+  }
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 55px;   /* 🔥 เพิ่มขนาดโลโก้ */
+  width: auto;
+  display: block;
+}
+
+
+
+/* =========================================
+   📱 Mobile Optimization (แก้ไขเรื่องบังเนื้อหา)
+   ========================================= */
+
+/* =========================================
+   📱 Mobile Optimization (2 แถว + เรืองแสงกระพริบเบาๆ ✨)
+   ========================================= */
+/* สถานะ Active สำหรับ Desktop */
+/* สำหรับหน้าจอ Desktop */
+
+
+.nav-center a.active {
+    opacity: 1;
+    color: #fff !important;
+    background: rgba(255, 140, 0, 0.15); /* พื้นหลังส้มจางๆ */
+    border: 1px solid #ff8c00;          /* ขอบส้มเข้ม */
+    border-radius: 8px;                /* ความโค้งมน */
+    padding: 8px 16px;                 /* เพิ่มพื้นที่ให้เห็นกรอบชัดๆ */
+    box-shadow: 
+        0 0 10px rgba(255, 140, 0, 0.4), 
+        inset 0 0 5px rgba(255, 140, 0, 0.2); /* แสงเรืองภายในและภายนอก */
+    text-shadow: 0 0 8px #ff8c00;      /* ตัวอักษรเรืองแสง */
+    transform: translateY(-2px);       /* ให้ปุ่มดูลอยขึ้นเล็กน้อย */
+}
+
+/* ปรับระยะห่างเมนูปกติไม่ให้มันเบียดกันเมื่อมีกรอบ */
+.nav-center a {
+    padding: 8px 16px;
+    border: 1px solid transparent; /* จองพื้นที่ไว้ไม่ให้เมนูขยับเวลา active */
+    transition: all 0.3s ease;
+}
+@media screen and (max-width: 768px) {
+
+  /* --- 🟢 ส่วนที่เพิ่มใหม่: สร้าง Animation การกระพริบ --- */
+  @keyframes softGlowPulse {
+    0%, 100% {
+      /* สถานะปกติ: ไม่มีแสง, ขอบสีเดิม */
+      box-shadow: 0 0 0px rgba(229, 9, 20, 0);
+      border-color: rgba(255,255,255,0.1);
+    }
+    50% {
+      /* สถานะกึ่งกลาง: เรืองแสงสีแดงออกมาเบาๆ */
+      box-shadow: 0 0 12px rgba(229, 9, 20, 0.4);
+      border-color: rgba(229, 9, 20, 0.6);
+    }
+  }
+
+  /* ... (ต่อจากโค้ดปุ่มเดิม) ... */
+
+ /* ... (โค้ด Mobile ก่อนหน้า) ... */
+
+  /* 🔥 Active State: ปุ่มของหน้าที่เปิดอยู่ */
+  .nav-center a.active, .nav-item.active {
+    background: linear-gradient(135deg, #e50914, #ff4b2b) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.6) !important;
+    animation: none !important; 
+    opacity: 1 !important;
+  }
+  /* -------------------------------------------------- */
+
+
+  /* 1. แก้ไข Body: เอาช่องว่างด้านบนออก */
+  body {
+    padding-top: 0 !important;
+  }
+
+  /* 2. แก้ไข Navbar: ปลดล็อกให้เรียงตามธรรมชาติ */
+  .navbar {
+    position: relative !important; /* เลิกบังชาวบ้าน */
+    top: auto;
+    
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 15px;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.95);
+    justify-content: space-between;
+  }
+
+  /* โซนบน: โลโก้ + ปุ่มสมัคร */
+  .logo {
+    order: 1;
+    display: flex;
+    align-items: center;
+  }
+  .logo img { height: 35px; }
+
+  .subscribe-btn {
+    order: 2;
+    font-size: 12px !important;
+    padding: 6px 14px !important;
+    height: fit-content;
+    align-self: center;
+    /* ถ้าอยากให้ปุ่มสมัครหลักกระพริบด้วย ให้ uncomment บรรทัดล่างนี้ครับ */
+    /* animation: softGlowPulse 3s infinite ease-in-out; */
+  }
+
+  /* โซนล่าง: เมนู 2 แถว */
+  .nav-center, .nav-links {
+    order: 3;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;       
+    justify-content: center; 
+    gap: 8px;              
+    padding-bottom: 5px;
+  }
+
+  /* ดีไซน์ปุ่มเมนู */
+  .nav-center a, .nav-item {
+    display: inline-block;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 5px 12px;     
+    background: rgba(255,255,255,0.08); 
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50px;
+    transition: 0.2s;
+    text-align: center;
+    flex-grow: 1; 
+    max-width: 30%;
+
+    /* 🔥👇 เพิ่มคำสั่งเรียกใช้ Animation ตรงนี้ครับ 👇🔥 */
+    /* เล่น animation ชื่อ softGlowPulse นาน 3 วิ, วนลูปตลอดไป, แบบนุ่มนวล */
+    animation: softGlowPulse 3s infinite ease-in-out;
+  }
+
+  /* ซ่อน Scrollbar */
+  .nav-center::-webkit-scrollbar, .nav-links::-webkit-scrollbar { display: none; }
+
+  /* เอฟเฟกต์ตอนเอานิ้วกดค้าง (จะหยุดกระพริบแล้วสว่างค้างแทน) */
+  .nav-center a:hover, .nav-item:hover,
+  .nav-center a:active, .nav-item:active {
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+    /* หยุด animation ชั่วคราวตอนกด */
+    animation: none; 
+    /* แสดงแสงสว่างค้างไว้ */
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+    border-color: rgba(229, 9, 20, 0.8);
+  }
+
+  /* --- ปรับส่วนหัวข้อและอื่นๆ --- */
+  .page-header {
+    padding: 15px;
+    gap: 15px;
+  }
+  .page-header h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+  .movie-search {
+    font-size: 13px;
+    padding: 10px 15px 10px 35px !important;
+  }
+  .search-icon-inside {
+    font-size: 13px;
+    left: 12px;
+  }
+  .btn-subscribe-main {
+    font-size: 13px;
+    padding: 10px 15px;
+  }
+}
+/* ซ่อนใน Desktop เหมือนเดิม */
+.mobile-marquee { display: none; }
+
+
+/* --- ส่วนเพิ่มเติมสำหรับข้อความวิ่ง --- */
+@media screen and (max-width: 768px) {
+    /* ปรับ Navbar ให้รองรับ 3 ส่วน: โลโก้ | ข้อความวิ่ง | ปุ่มสมัคร */
+    .navbar {
+        display: flex !important;
+        flex-direction: row !important; /* บังคับเรียงแนวนอน */
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important; /* ยอมให้เมนูหลักลงไปแถว 2 */
+        padding: 10px 15px !important;
+    }
+
+    .mobile-marquee {
+        display: block !important;
+        flex: 1;
+        margin: 0 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        
+        /* 🔥 เทคนิคทำให้ขอบจาง (Fade effect) */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    }
+
+  .mobile-marquee marquee {
+        color: #ffffff;
+        font-size: 12px;
+        filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.3));
+        vertical-align: middle;
+    }
+
+
+    /* บังคับให้เมนู (หน้าแรก, หนังทั้งหมด) ลงไปอยู่แถวที่ 2 */
+    .nav-center {
+        order: 2; 
+        width: 100% !important;
+        margin-top: 10px !important;
+    }
+    
+    .logo { order: 0; }
+    .subscribe-btn { order: 1; }
+}

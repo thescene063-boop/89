@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>สถานะการชำระเงิน | The Scene 89</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+<style>
+
+
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(0, 0, 0, 0.2), transparent 70%),
+        linear-gradient(180deg, #020202, #0a0a0a 60%, #020202);
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 50px;
+    }
+
+    /* Ambient Background Animation */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(229, 9, 20, 0.1), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.04), transparent 50%);
+      animation: ambientMove 20s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes ambientMove {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-20px) scale(1.1); }
+    }
+    .top-bar-x {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #333;
+  width: 100%; /* เต็มจอ */
+}
+.status-card {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 36px 32px;
+
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(26px) saturate(160%);
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
+
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.18);
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+
+  text-align: center;
+}
+
+
+.status-card h1 {
+  margin-bottom: 10px;
+}
+
+.status-sub {
+  font-size: 14px;
+  opacity: .75;
+  margin-bottom: 22px;
+}
+
+.status-check {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.status-check input {
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-family: 'Prompt', sans-serif;
+}
+
+
+.status-btn {
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg,#e50914,#ff4b2b);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(229,9,20,.45);
+  transition: .25s;
+}
+
+.status-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(229,9,20,.65);
+}
+
+.status-result {
+  margin-top: 18px;
+  font-size: 15px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 22px;
+  font-size: 13px;
+  color: #ff4b2b;
+  text-decoration: none;
+}
+.status-ok {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  justify-content: center;
+}
+
+.status-line strong {
+  font-weight: 600;
+}
+
+.status-line .icon {
+  font-size: 16px;
+}
+
+.status-line.success {
+  color: #4caf50;
+  font-size: 15px;
+}
+
+.status-line.expire {
+  color: #ffd54f;
+}
+
+.status-line.countdown {
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-top: 4px;
+  color: #ffffff;
+}
+
+.status-line.countdown .time {
+  color: #ff5252;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.renew-link {
+  display: block;
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #e50914, #ff4b2b);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(229,9,20,0.45);
+  transition: all .25s ease;
+}
+
+.renew-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(229,9,20,0.65);
+}
+/* ===== Green pill ===== */
+.status-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-pill.success {
+  background: #0f2a1a;
+  color: #3fdc8b;
+}
+
+.status-pill .dot {
+  width: 8px;
+  height: 8px;
+  background: #3fdc8b;
+  border-radius: 50%;
+}
+
+/* ===== Expire row ===== */
+.expire-row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.expire-row .value {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ===== Countdown ===== */
+.countdown-box {
+  margin-top: 14px;
+  background: #161616;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time-col {
+  flex: 1;
+  text-align: center;
+}
+
+.time-col .num {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.time-col .unit {
+  font-size: 12px;
+  opacity: .6;
+  margin-top: 2px;
+}
+
+.time-col.danger .num {
+  color: #fbff00;
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,.08);
+}
+/* --- ปุ่มติดตาม X (จะโผล่มาตอนไม่พบข้อมูล) --- */
+.follow-x-alert {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-x-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid #333;
+  transition: 0.3s;
+}
+
+.btn-x-follow:hover {
+  background: #222;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* --- ปุ่มติดต่อ LINE (สีเขียว) --- */
+.btn-line-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 24px;
+  background: #019740; /* สีเขียว LINE */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(6, 199, 85, 0.4);
+}
+
+.btn-line-contact:hover {
+  background: #05a546;
+  transform: translateY(-2px);
+}
+/* --- ปุ่มติดตาม X (แบบถาวรในหน้าเช็คสถานะ) --- */
+.btn-x-static {
+  display: block; /* เต็มความกว้าง */
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid #333;
+  transition: all .25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.btn-x-static:hover {
+  background: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+  border-color: #555;
+}
+
+/* --- 1. แถบติดตามด้านบนสุด (Top Bar) --- */
+
+/* --- 1. แถบติดตามด้านบนสุด (Top Bar) --- */
+
+/* --- ส่วนที่หายไป: ดีไซน์ปุ่มกดติดตาม --- */
+.x-follow-btn {
+  background-color: #ffffff; /* พื้นหลังสีขาว */
+  color: #000000;            /* ตัวหนังสือสีดำ */
+  padding: 5px 11px;         /* ความอ้วนของปุ่ม */
+  border-radius: 20px;       /* ทรงแคปซูล */
+  text-decoration: none;     /* ลบขีดเส้นใต้ */
+  font-weight: 600;          /* ตัวหนา */
+  font-size: 11.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;                  /* ระยะห่างไอคอนกับตัวหนังสือ */
+  transition: all 0.3s ease;
+  border: 1px solid #ccc;    /* เพิ่มขอบบางๆ */
+}
+
+.x-follow-btn:hover {
+  background-color: #e0e0e0; /* สีตอนเอาเมาส์ชี้ */
+  transform: translateY(-1px);
+}
+
+/* ปุ่มสีเขียวสำหรับไปหน้าดูหนัง */
+.btn-go-movie {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 14px;
+  background: linear-gradient(135deg, #00c851, #007e33); /* สีเขียวไล่เฉด */
+  color: white;
+  text-decoration: none;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 200, 81, 0.4); /* เงาสีเขียว */
+  transition: transform 0.2s;
+}
+
+.btn-go-movie:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 200, 81, 0.6);
+}
+</style>
+</head>
+
+<body>
+
+<div id="navbar"></div>
+<div class="top-bar-x">
+
+  <span>📢 ติดตามข่าวสารใหม่ๆ ก่อนใคร @Thescene89</span>
+
+  <a href="https://x.com/TheScene89" target="_blank"
+
+     class="x-follow-btn"
+
+     id="followBtn"
+
+     onclick="unlockSystem()"> <i class="fa-brands fa-x-twitter"></i> กดติดตาม
+
+  </a>
+
+</div>
+<div class="status-card">
+  <h1><i class="fa-solid fa-money-check"></i> สถานะการชำระเงิน</h1>
+  <div class="status-sub">ตรวจสอบการชำระเงินของคุณ เช็ควันเวลาหมดอายุ</div>
+
+  <div class="status-check">
+    <input id="checkUser" placeholder="กรอก Username X(ตัวอย่าง @Thescene89)">
+    <button class="status-btn" onclick="checkStatus()"><i class="fa-regular fa-circle-check"></i> เช็คสถานะ</button>
+  </div>
+
+  <div id="statusResult" class="status-result">
+    กรุณากรอก Username เพื่อตรวจสอบ
+  </div>
+
+ <a href="payment.html" class="back-link">← กลับหน้าชำระเงิน</a>
+
+<a href="payment.html" class="renew-link">
+  <i class="fa-solid fa-repeat"></i> ต่ออายุสมาชิก / ชำระเงินอีกครั้ง
+</a>
+
+</div>
+
+  <script>
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbxIrkE9n0TMaxyLWRslMxwkWMR-Zd6RsznxsfS21pz5O8vT7OCNtpCW9p-q4qDUefQPVw/exec";
+
+
+let countdownTimer = null;
+
+// แก้บรรทัดแรก: เพิ่มคำว่า user เข้าไปในวงเล็บ
+function startCountdown(expireDate, el, user) {
+  if (countdownTimer) clearInterval(countdownTimer);
+
+  function update() {
+    const now = new Date();
+    const diff = expireDate - now;
+
+    if (diff <= 0) {
+      clearInterval(countdownTimer);
+      el.innerHTML = "⛔ สมาชิกหมดอายุแล้ว";
+      el.style.color = "#f44336";
+      return;
+    }
+
+    const totalHours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    el.innerHTML = `
+      <div class="status-ok">
+        <div class="status-pill success">
+          <span class="dot"></span>
+          ชำระเงินเรียบร้อยแล้ว
+        </div>
+
+        <div style="margin-top: 12px; font-size: 15px; color: #fff; font-weight: 500;">
+            👤 บัญชี: <span style="color: #ff4b2b; font-size: 16px; font-weight: 600;">${user}</span>
+        </div>
+        <div class="expire-row">
+          <span class="label"><i class="fa-regular fa-calendar-days"></i> วันหมดอายุ</span>
+          <span class="value">
+            ${expireDate.toLocaleDateString("th-TH")}
+            ${expireDate.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} น.
+          </span>
+        </div>
+
+        <div class="countdown-box">
+          <div class="time-col">
+            <div class="num">${totalHours}</div>
+            <div class="unit">ชั่วโมง</div>
+          </div>
+          <div class="divider"></div>
+          <div class="time-col">
+            <div class="num">${minutes}</div>
+            <div class="unit">นาที</div>
+          </div>
+          <div class="divider"></div>
+          <div class="time-col danger">
+            <div class="num">${seconds}</div>
+            <div class="unit">วินาที</div>
+          </div>
+        </div>
+
+        <a href="movies.html" class="btn-go-movie">
+           <i class="fa-solid fa-circle-play"></i> เข้าสู่เว็บไซต์ดูหนัง
+        </a>
+
+      </div>
+    `;
+  }
+
+  update();
+  countdownTimer = setInterval(update, 1000);
+}
+
+/* ===== ฟังก์ชันเช็คสถานะ (อัปเดตใหม่) ===== */
+function checkStatus() {
+  const user = document.getElementById("checkUser").value.trim();
+  const result = document.getElementById("statusResult");
+
+  // ลิงก์ X ของคุณ (ใส่ตรงนี้)
+  const MY_X_LINK = "https://x.com/TheScene89"; 
+
+  if (!user) {
+    result.innerText = "กรุณากรอก Username";
+    result.style.color = "#ff5252";
+    return;
+  }
+
+  const url = `${SHEET_URL}?username=${encodeURIComponent(user)}`;
+  
+  result.innerText = "⏳ กำลังตรวจสอบ...";
+  result.style.color = "#ffb300";
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+
+  if (data.error === "not_found") {
+        // 🔴 ใส่ลิงก์ LINE ของคุณตรงนี้ กรณีที่1
+        const MY_LINE_LINK = "https://line.me/R/ti/p/@532wtbns"; 
+
+        result.innerHTML = `
+          <div class="follow-x-alert">
+            <div style="color: #ff5252; font-size: 16px; font-weight: bold; margin-bottom: 6px;">
+              ❌ ไม่พบข้อมูลในระบบ
+            </div>
+            <div style="font-size: 13px; opacity: 0.8; margin-bottom: 8px;">
+              โปรดติดต่อแอดมินที่ไลน์ด้านล่าง <br> เพื่อตรวจสอบความถูกต้องครับ
+            </div>
+            <a href="${MY_LINE_LINK}" target="_blank" class="btn-line-contact">
+              <i class="fa-brands fa-line"></i> ติดต่อแอดมิน
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      if (data.error === "missing_username") {
+        result.innerText = "ไม่พบ Username";
+        result.style.color = "#ff5252";
+        return;
+      }
+
+      const status = data.status;
+      const expireRaw = data.expire;
+
+      // กรณี 2: กำลังตรวจสอบ -> ให้ไปกดติดตามรอ
+    // กรณี 2: กำลังตรวจสอบ
+      if (status === "pending") {
+        result.innerHTML = `
+          <div class="follow-x-alert">
+            <div style="color: #ffb300; font-size: 16px; font-weight: bold; margin-bottom: 6px;">
+              ⏳ กำลังตรวจสอบสลิป
+            </div>
+
+            <div style="margin-bottom: 10px; font-size: 14px; color: #ddd;">
+               👤 บัญชี: <span style="color: #fff; font-weight: bold;">${user}</span>
+            </div>
+
+            <div style="font-size: 13px; opacity: 0.8; margin-bottom: 8px;">
+              ระบบได้รับข้อมูลแล้ว รอแอดมินอนุมัติ <br> ระหว่างรอ รบกวนกดติดตาม X ด้วยนะครับ
+            </div>
+            <a href="${MY_X_LINK}" target="_blank" class="btn-x-follow">
+              <i class="fa-brands fa-x-twitter"></i> กดติดตาม @TheScene89
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+
+// กรณี 3: 
+    // กรณี 3: ถูกปฏิเสธ
+      if (status === "rejected") {
+        const MY_LINE_LINK = "https://line.me/R/ti/p/@532wtbns"; // 🔴 อย่าลืมเช็คลิงก์ไลน์
+
+        result.innerHTML = `
+          <div class="follow-x-alert">
+            <div style="color: #ff5252; font-size: 16px; font-weight: bold; margin-bottom: 6px;">
+              ❌ ข้อมูลถูกปฏิเสธ
+            </div>
+
+            <div style="margin-bottom: 10px; font-size: 14px; color: #ddd;">
+               👤 บัญชี: <span style="color: #fff; font-weight: bold;">${user}</span>
+            </div>
+
+            <div style="font-size: 13px; opacity: 0.8; margin-bottom: 8px;">
+              สลิปอาจไม่ถูกต้อง หรือยอดเงินไม่ครบ <br> กรุณาติดต่อแอดมินเพื่อตรวจสอบครับ <br> หรือกดติดตาม X ให้เรียบร้อย
+            </div>
+            <a href="${MY_LINE_LINK}" target="_blank" class="btn-line-contact">
+              <i class="fa-brands fa-line"></i> ติดต่อแอดมิน
+            </a>
+            <a href="${MY_X_LINK}" target="_blank" class="btn-x-follow">
+              <i class="fa-brands fa-x-twitter"></i> กดติดตาม @TheScene89
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      // กรณี 4: หมดอายุ (expired)
+      if (status === "expired") {
+        result.innerHTML = `
+          <div class="follow-x-alert" style="border-color: #ff4444; background: rgba(255, 68, 68, 0.1);">
+            <div style="color: #ff4444; font-size: 18px; font-weight: bold; margin-bottom: 6px;">
+              ⛔ สมาชิกหมดอายุแล้ว
+            </div>
+
+            <div style="margin-bottom: 15px; font-size: 14px; color: #ddd;">
+               👤 บัญชี: <span style="color: #fff; font-weight: bold;">${user}</span>
+            </div>
+
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 15px; color: #fff;">
+              ระยะเวลาสมาชิกของคุณสิ้นสุดลงแล้ว <br>
+              กรุณาต่ออายุเพื่อเข้าใช้งานเว็บไซต์ต่อครับ
+            </div>
+
+            <a href="payment.html" class="renew-link" style="display: block; width: 100%; text-align: center; text-decoration: none; padding: 12px; border-radius: 12px; background: linear-gradient(135deg, #e50914, #ff4b2b); color: #fff; font-weight: 600; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);">
+              <i class="fa-solid fa-rotate-right"></i> ต่ออายุสมาชิกทันที
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+    /* ... โค้ดเก่าข้างบน (ส่วน rejected) ... */
+
+      // 👇👇 เริ่มวางทับตรงนี้ 👇👇
+     if (status === "approved") {
+        
+        // กรณี: ลูกค้าถาวร (ไม่มีวันหมดอายุ)
+        if (!expireRaw) {
+           result.innerHTML = `
+             <div style="color: #4caf50; font-size: 18px; font-weight: bold; margin-bottom: 6px;">
+               ✅ ชำระเงินเรียบร้อยแล้ว
+             </div>
+             <div style="margin-bottom: 15px; font-size: 15px; color: #ccc;">
+                👤 บัญชี: <span style="color: #fff; font-weight: bold;">${user}</span>
+             </div>
+
+             <a href="movies.html" class="btn-go-movie">
+                <i class="fa-solid fa-circle-play"></i> เข้าสู่เว็บไซต์ดูหนัง
+             </a>
+           `;
+           return;
+        }
+
+        // กรณี: มีวันหมดอายุ (เรียกฟังก์ชันนับถอยหลัง)
+        // 🔴 สังเกตตรงนี้: เราเติม , user เข้าไปในวงเล็บท้ายสุด
+        startCountdown(new Date(expireRaw), result, user);
+        return;
+      }
+
+      /* ... โค้ดเก่าข้างล่าง (ส่วน result.innerText = "ไม่สามารถตรวจสอบ..." ) ... */
+
+      result.innerText = "ไม่สามารถตรวจสอบสถานะได้";
+      result.style.color = "#aaa";
+    })
+    .catch(() => {
+      result.innerText = "เกิดข้อผิดพลาดในการเชื่อมต่อ";
+      result.style.color = "#ff5252";
+    });
+}   
+
+
+
+
+
+
+
+
+
+
+
+</script>
+  
+
+  <!-- โหลด Navbar -->
+  <script src="js/navbar.js"></script>
+
+</body>
+</html>

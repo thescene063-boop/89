@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>สมัครสมาชิก | The Scene 89</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+    /* =========================================
+       1. GLOBAL & BACKGROUND (Luxury Style)
+       ========================================= */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(0, 0, 0, 0.2), transparent 70%),
+        linear-gradient(180deg, #020202, #0a0a0a 60%, #020202);
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 50px;
+    }
+
+    /* Ambient Background Animation */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(229, 9, 20, 0.1), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.04), transparent 50%);
+      animation: ambientMove 20s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes ambientMove {
+      from { transform: translateY(0) scale(1); }
+      to { transform: translateY(-20px) scale(1.1); }
+    }
+
+    /* =========================================
+       2. TOP BAR & STATUS
+       ========================================= */
+    .top-bar-x {
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      color: #ffffff;
+      padding: 12px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    }
+
+    .x-follow-btn {
+      background: #fff;
+      color: #000;
+      padding: 6px 16px;
+      border-radius: 99px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    
+    .x-follow-btn:hover {
+      transform: scale(1.05);
+      background: #eee;
+    }
+
+    .status-bar {
+      width: 90%;
+      max-width: 450px;
+      margin: 25px auto 0;
+      padding: 16px;
+      text-align: center;
+      border-radius: 18px;
+      font-weight: 600; /* ตัวหนาขึ้น */
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      
+      background: rgba(30, 30, 30, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 80, 80, 0.3); /* ขอบแดงจางๆ */
+      color: #ff6b6b;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* เงาตัวหนังสือ */
+    }
+
+    .status-bar.unlocked {
+      background: linear-gradient(135deg, rgba(6, 199, 85, 0.9), rgba(6, 199, 85, 0.7));
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 5px 25px rgba(6, 199, 85, 0.4);
+      transform: translateY(5px);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* =========================================
+       3. MAIN CARD (The Glass Box)
+       ========================================= */
+    .pay-wrapper {
+      width: 90%;
+      max-width: 450px;
+      margin: 25px auto;
+      padding: 40px 28px;
+      
+      background: linear-gradient(180deg, rgba(35, 35, 35, 0.7), rgba(15, 15, 15, 0.8)); /* ปรับพื้นหลังเข้มขึ้นอีกนิดเพื่อให้ตัวหนังสือเด่น */
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.12);
+      
+      box-shadow: 
+        0 40px 100px rgba(0,0,0,0.8),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+        
+      animation: cardEnter 0.8s ease-out;
+    }
+
+    @keyframes cardEnter {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pay-wrapper h1 {
+      text-align: center;
+      margin: 0 0 35px;
+      font-size: 30px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      
+      /* ทำให้หัวข้อดูมีมิติและเด่นสุดๆ */
+      text-shadow: 
+        0 2px 0 #000,
+        0 0 20px rgba(229, 9, 20, 0.6);
+    }
+
+    /* =========================================
+       4. FORMS & INPUTS (High Contrast)
+       ========================================= */
+    /* ปรับ Label ให้เด่น */
+    label {
+      font-size: 15px;
+      font-weight: 500;
+      color: #ffffff; /* ขาวล้วน */
+      margin: 20px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    /* เพิ่มลูกเล่นขีดแดงหน้า Label เพื่อนำสายตา */
+    label::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 18px;
+      background: #e50914;
+      border-radius: 2px;
+      box-shadow: 0 0 10px #e50914;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.5); /* Placeholder สว่างขึ้น */
+      font-weight: 400;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      background: rgba(0, 0, 0, 0.8);
+      border-color: #ff4b4b;
+      box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+    }
+
+    /* Example Trigger */
+    .example-trigger {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffb549; /* สีทองส้ม เด่นๆ */
+      cursor: pointer;
+      background: rgba(255, 181, 73, 0.15);
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 181, 73, 0.3);
+      transition: 0.3s;
+      text-shadow: none;
+    }
+    .example-trigger:hover {
+      background: rgba(255, 181, 73, 0.3);
+      color: #fff;
+    }
+
+    /* Example Image Container */
+    #exampleContainer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      margin-top: 5px;
+    }
+    #exampleContainer.show {
+      max-height: 400px;
+      opacity: 1;
+      margin-bottom: 20px;
+    }
+    .example-content img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    /* =========================================
+       5. PLAN CARDS (Selector)
+       ========================================= */
+    .plan-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 400px) {
+      .plan-group { grid-template-columns: 1fr; }
+    }
+
+    .plan-card {
+      padding: 18px 10px;
+      text-align: center;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08); /* พื้นหลังสว่างขึ้นนิด */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .plan-card strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .plan-card span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7); /* ตัวเล็กสว่างขึ้น */
+    }
+
+    /* Active State (Luxury Red Glow) */
+    .plan-card.active {
+      background: linear-gradient(135deg, rgba(220, 20, 60, 0.8), rgba(150, 0, 0, 0.9));
+      border: 1px solid #ff4b4b;
+      box-shadow: 0 5px 20px rgba(229, 9, 20, 0.4);
+      transform: translateY(-2px);
+    }
+    .plan-card.active strong { color: #fff; }
+    .plan-card.active span { color: rgba(255,255,255,0.9); }
+
+    /* =========================================
+       6. PAYMENT & UPLOAD
+       ========================================= */
+    .qr {
+      text-align: center;
+      margin: 35px 0;
+      padding: 25px;
+      background: rgba(0,0,0,0.4); /* พื้นหลังเข้มรองรับ QR */
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+    
+    .qr p {
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 0;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .qr img {
+      width: 200px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border: 4px solid #fff;
+    }
+
+    .bank-details {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .bank-details p {
+      margin: 6px 0;
+      font-size: 14px;
+      text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .bank-details p:first-child { color: #4aff85; font-weight: 700; font-size: 15px; } /* ธนาคารเขียวเด่น */
+    .bank-details p:last-child { color: #ffeaa7; font-weight: 500; letter-spacing: 0.5px; } /* เลขบัญชีทอง */
+
+    .file-upload input { display: none; }
+    /* =========================================
+       [แก้ไข] กรอบอัปโหลดสลิป (ให้เล็กลง กระชับขึ้น)
+       ========================================= */
+    .file-upload span {
+      display: flex; 
+      flex-direction: row; /* 👈 เปลี่ยนเป็นแนวนอน (ไอคอนซ้าย ข้อความขวา) จะได้ไม่สูง */
+      align-items: center; 
+      justify-content: center; 
+      gap: 10px; 
+      width: 100%; 
+      padding: 22px 15px; /* 👈 ลด Padding ลง (เดิม 25px) */
+      border-radius: 12px; /* ลดความมนลงนิดนึง */
+      background: rgba(255, 255, 255, 0.05); 
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.8); 
+      font-weight: 500; 
+      cursor: pointer; 
+      transition: 0.3s;
+      height: auto; /* ให้สูงตามเนื้อหา */
+    }
+
+    .file-upload span:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    }
+
+    .slip-preview img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    /* =========================================
+       7. SUBMIT BUTTON (Premium Gradient)
+       ========================================= */
+    .submit-btn {
+      width: 100%;
+      margin-top: 35px;
+      padding: 18px;
+      border-radius: 99px;
+      border: none;
+      font-size: 18px; /* ตัวใหญ่ขึ้น */
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Prompt', sans-serif;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      
+      background: linear-gradient(135deg, #d50000, #ff2a1f);
+      box-shadow: 
+        0 10px 30px rgba(213, 0, 0, 0.5),
+        inset 0 2px 0 rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Shine Effect */
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: 0.5s;
+    }
+    .submit-btn:hover::after { left: 100%; }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(213, 0, 0, 0.7);
+      filter: brightness(1.1);
+    }
+
+    .submit-btn:active { transform: scale(0.97); }
+
+    /* Locked State */
+    .submit-btn.is-locked {
+      background: #333 !important;
+      color: #888 !important;
+      box-shadow: none !important;
+      border: 1px solid #444;
+      text-shadow: none;
+    }
+
+    /* Loading State */
+    .submit-btn.loading-mode {
+      background: #555 !important;
+      cursor: wait;
+      opacity: 0.9;
+    }
+
+    /* =========================================
+       8. POPUP & NOTIFICATIONS
+       ========================================= */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+       background: rgba(0,0,0,0.55);   /* เบาลง */
+  backdrop-filter: blur(3px);     /* เบลอแค่นิด */
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .popup-box {
+      background: linear-gradient(145deg, #1c1c1c, #111);
+      padding: 40px 30px;
+      border-radius: 24px;
+      text-align: center;
+      width: 85%;
+      max-width: 380px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.9);
+      animation: popupScale 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    @keyframes popupScale {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-icon {
+      font-size: 60px;
+      background: -webkit-linear-gradient(#00ff41, #008f24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.4));
+    }
+    
+    .popup-box h2 {
+        color: #fff;
+        font-size: 24px;
+        margin: 10px 0;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .warning-box {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 25px 0;
+    }
+    .warning-box strong { color: #ffd700; font-size: 20px; display: block; margin: 5px 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .warning-box p { color: #fff; margin: 0; font-size: 14px; }
+
+    .status-btn {
+      background: #2a2a2a;
+      margin-top: 15px;
+      font-size: 15px;
+      width: auto;
+      padding: 12px 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .status-btn:hover { background: #3a3a3a; box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
+
+    /* Shake Animation */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .shake-attention {
+      animation: shake 0.4s ease-in-out;
+      border: 2px solid #e50914 !important;
+    }
+
+    /* Error Popup */
+    .error-popup {
+      position: fixed;
+      top: 20px; right: 20px;
+      z-index: 10000;
+      animation: slideIn 0.3s ease;
+    }
+    .error-box {
+      background: rgba(255, 40, 40, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 20px;
+      border-radius: 12px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      color: white;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+    .popup-close {
+      position: absolute; top: 15px; right: 15px;
+      font-size: 28px; color: #777; cursor: pointer; transition: 0.2s;
+    }
+    .popup-close:hover { color: #fff; transform: rotate(90deg); }
+
+    .payment-note {
+      font-size: 14px; color: #aaa; text-align: center; margin-top: 25px; line-height: 1.6;
+    }
+    .payment-note span { color: #ff4b4b; font-weight: 700; text-decoration: underline; }
+    .payment-note a { color: #fff; text-decoration: none; border-bottom: 1px dashed #fff; font-weight: 500; }
+    .payment-note a:hover { color: #ffb549; border-color: #ffb549; }
+.popup-box.luxury {
+  background: linear-gradient(145deg, #151515, #0d0d0d);
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+}
+
+.success-icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00ff85, #00c853);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px rgba(0,255,133,0.6);
+}
+
+.success-icon i {
+  font-size: 42px;
+  color: #000;
+}
+
+.popup-desc {
+  color: #bbb;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.wait-box {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.15),
+    rgba(255, 165, 0, 0.05)
+  );
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 30px;
+}
+
+.wait-box span {
+  display: block;
+  font-size: 13px;
+  color: #ddd;
+}
+
+.wait-box strong {
+  display: block;
+  font-size: 24px;
+  color: #ffd700;
+  margin: 8px 0;
+}
+
+.wait-box small {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.popup-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: 0.3s;
+  font-family: 'Prompt', sans-serif;
+}
+
+.popup-btn.primary {
+  background: linear-gradient(135deg, #ff3b30, #d50000);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(213,0,0,0.5);
+}
+
+.popup-btn.primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+}
+
+.popup-btn.secondary {
+  margin-top: 12px;
+  background: #222;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.popup-btn.secondary:hover {
+  background: #2f2f2f;
+}
+
+
+
+/* ยกเว้น Popup ไม่ต้องเบลอ */
+.popup-overlay {
+  filter: none !important;
+  pointer-events: auto;
+}
+
+
+/* เอฟเฟกต์ขอบแดงกระพิบ */
+@keyframes followPulse {
+  0% {
+    box-shadow: 0 0 0 rgba(229,9,20,0);
+    border-color: rgba(229,9,20,0.4);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(229,9,20,0.9);
+    border-color: rgba(229,9,20,1);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(229,9,20,0);
+    border-color: rgba(229,9,20,0.4);
+  }
+}
+
+/* สถานะยังไม่กดติดตาม */
+.x-follow-btn.need-follow {
+  border: 2px solid rgba(229,9,20,0.6);
+  animation: followPulse 1.5s infinite;
+}
+
+  </style>
+</head>
+
+<body>
+  <div id="navbar"></div>
+
+  <div class="top-bar-x">
+    <span>📢 ติดตามข่าวสารก่อนใคร</span>
+    <a href="https://x.com/TheScene89" target="_blank" class="x-follow-btn" id="followBtn" onclick="unlockSystem()">
+      <i class="fa-brands fa-x-twitter"></i> กดติดตาม
+    </a>
+  </div>
+
+  <div id="statusBar" class="status-bar">
+    <i class="fa-solid fa-lock"></i> ระบบล็อค: กรุณากดปุ่ม "ติดตาม" ด้านบน
+  </div>
+
+  <div class="pay-wrapper">
+    <h1>สมัครสมาชิก</h1>
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px;">
+      <label style="margin:0;">ชื่อผู้ใช้ X (Username)</label>
+      <span class="example-trigger" onclick="toggleExampleAnimated()">
+         <i class="fa-regular fa-image"></i> ตัวอย่าง
+      </span>
+    </div>
+
+    <div id="exampleContainer">
+       <div class="example-content">
+          <img src="images/ex.png" alt="ตัวอย่างหน้าโปรไฟล์">
+          <small style="color: #ccc; display: block; text-align: center; margin-top: 10px; font-size:13px;">
+            <i class="fa-solid fa-circle-info"></i> กดติดตาม และ นำชื่อ X มาใส่
+          </small>
+       </div>
+    </div>
+    <input type="text" id="username" placeholder="@THESCENE89 (ใส่ @ ด้วย)">
+
+    <label>LINE ID (เผื่อติดต่อกลับ)</label>
+    <input type="text" id="contact" placeholder="ไอดีไลน์ของคุณ">
+
+    <label>เลือกระยะเวลา</label>
+    <div class="plan-group">
+      <div class="plan-card" data-plan="1 เดือน (สมาชิกใหม่)">
+        <strong>1 เดือน 21฿</strong>
+        <span>สมาชิกใหม่</span>
+      </div>
+      <div class="plan-card" data-plan="1 เดือน (ต่ออายุ)">
+        <strong>1 เดือน 21฿</strong>
+        <span>ต่ออายุเดิม</span>
+      </div>
+      <div class="plan-card" data-plan="1 เดือน (ต่อใหม่)">
+        <strong>1 เดือน 21฿</strong>
+        <span>หลุดสมาชิก</span>
+      </div>
+    </div>
+    <input type="hidden" id="plan">
+
+    <div class="qr">
+      <p><i class="fa-solid fa-qrcode"></i> สแกนเพื่อชำระเงิน</p>
+      <img src="images/qrcode.jpg" alt="QR Payment">
+      <div class="bank-details">
+        <p>🏦 ธนาคารกสิกรไทย</p>
+        <p>👤 นาย สมชาย ใจดี</p>
+        <p>💳 123-4-56789-0</p>
+      </div>
+    </div>
+
+    <label>แนบสลิปการโอน</label>
+    <label class="file-upload">
+      <input type="file" id="slip" accept="image/*">
+      <span id="uploadText">
+        <i class="fa-solid fa-paperclip" style="font-size: 24px;"></i>
+        แตะเพื่อเลือกรูปสลิป
+      </span>
+    </label>
+
+    <div id="slipPreview" class="slip-preview" style="display:none; margin-top:15px; align-items:center; gap:10px;">
+      <img id="previewImg">
+      <div style="font-size:14px; color:#fff; font-weight:500;" id="fileName">ชื่อไฟล์...</div>
+    </div>
+
+    <button id="realSubmitBtn" class="submit-btn is-locked" onclick="checkSubmit()">
+      <i class="fa-solid fa-lock"></i> สมัคร (ต้องกดติดตามก่อน)
+    </button>
+
+    <p class="payment-note">
+      หลังชำระเงิน รอประมาณ <span>30 นาที</span><br>
+      เพื่อตรวจสอบการเข้ากลุ่ม<br>
+      <a href="https://line.me/R/ti/p/@532wtbns" target="_blank"><i class="fa-brands fa-line"></i> ติดต่อแอดมินหากเกินเวลา</a>
+    </p>
+    
+    <div style="text-align:center;">
+       <button class="submit-btn status-btn" onclick="location.href='status.html'">
+          <i class="fa-solid fa-magnifying-glass"></i> เช็คสถานะ
+       </button>
+    </div>
+    <p id="statusResult" style="text-align:center; margin-top:10px;"></p>
+
+  <div id="successPopup" class="popup-overlay">
+  <div class="popup-box luxury">
+    <div class="popup-close" onclick="closePopup()">&times;</div>
+
+    <div class="success-icon">
+      <i class="fa-solid fa-check"></i>
+    </div>
+
+
+    <h2>ส่งข้อมูลสำเร็จ!</h2>
+    <p class="popup-desc">
+      แอดมินได้รับข้อมูลเรียบร้อยแล้ว<br>
+      ระบบกำลังดำเนินการตรวจสอบ
+    </p>
+
+    <div class="wait-box">
+      <span>กรุณารอประมาณ</span>
+      <strong><i class="fa-solid fa-hourglass-half"></i> 30 นาที</strong>
+      <small>เพื่อตรวจสอบยอดเงินและเชิญเข้ากลุ่ม</small>
+    </div>
+
+    <!-- ปุ่มหลัก -->
+    <button class="popup-btn primary"
+      onclick="location.href='status.html'">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      เช็คสถานะการสมัคร
+    </button>
+
+    <!-- ปุ่มรอง -->
+    <a class="popup-btn secondary"
+       href="https://line.me/ti/g2/..."
+       target="_blank">
+      <i class="fa-brands fa-line"></i>
+      เข้ากลุ่ม LINE (ถ้ามี)
+    </a>
+  </div>
+</div>
+
+<div id="followPopup" class="popup-overlay">
+  <div class="popup-box luxury">
+    <div class="popup-close" onclick="closeFollowPopup()">&times;</div>
+
+    <div class="success-icon" style="background: radial-gradient(circle,#ff3b30,#d50000); box-shadow:0 0 40px rgba(213,0,0,0.6);">
+      <i class="fa-solid fa-lock"></i>
+    </div>
+
+    <h2>ระบบล็อคอยู่!</h2>
+    <p class="popup-desc">
+      กรุณากดติดตาม X : The Scene 89<br>
+      เพื่อปลดล็อกการสมัครสมาชิก
+    </p>
+
+    <a href="https://x.com/TheScene89" target="_blank" class="popup-btn primary" onclick="unlockSystem(); closeFollowPopup()">
+      <i class="fa-brands fa-x-twitter"></i>
+      ไปกดติดตาม
+    </a>
+
+    <button class="popup-btn secondary"
+      onclick="closeFollowPopup()">
+      ปิด
+    </button>
+  </div>
+</div>
+
+  <script src="js/navbar.js"></script>
+
+  <script>
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbxIrkE9n0TMaxyLWRslMxwkWMR-Zd6RsznxsfS21pz5O8vT7OCNtpCW9p-q4qDUefQPVw/exec";
+
+  async function sendToGoogleSheet() {
+     const user = document.getElementById("username").value.trim();
+     const contact = document.getElementById("contact").value.trim();
+     const plan = document.getElementById("plan").value;
+     const slipFile = document.getElementById("slip").files[0];
+     
+     // 1. ตรวจสอบข้อมูล
+     if (!user || !contact || !plan || !slipFile) {
+       showErrorPopup("กรุณากรอกข้อมูลและแนบสลิปให้ครบ");
+       return;
+     }
+
+     // 2. 🔥 [จุดสำคัญ] บังคับเปิดโหมดเบลอทันที
+     document.body.classList.add("follow-popup-open"); 
+     
+     // 3. แสดง Popup สำเร็จ
+     document.getElementById("successPopup").style.display = "flex";
+     
+     const btn = document.getElementById("realSubmitBtn");
+     const originalText = btn.innerHTML;
+     
+     // Reset Form
+     document.getElementById("username").value = "";
+     document.getElementById("contact").value = "";
+     document.getElementById("plan").value = "";
+     document.getElementById("slip").value = ""; 
+     document.getElementById("fileName").innerText = "";
+     document.getElementById("slipPreview").style.display = "none";
+     document.getElementById("uploadText").innerHTML = '<i class="fa-solid fa-paperclip" style="font-size: 24px;"></i> แตะเพื่อเลือกรูปสลิป';
+     document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("active"));
+     
+     btn.classList.add("loading-mode");
+     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่ง...`;
+
+     try {
+       const base64String = await toBase64(slipFile);
+
+       fetch(SHEET_URL, {
+         redirect: "follow",
+         method: "POST",
+         headers: { "Content-Type": "text/plain;charset=utf-8" },
+         body: JSON.stringify({
+           username: user,
+           line: contact,
+           plan: plan,
+           slipBase64: base64String,
+           fileName: slipFile.name
+         })
+       }).then(() => {
+           console.log("Sent successfully");
+           btn.classList.remove("loading-mode");
+           btn.innerHTML = originalText;
+       }).catch(e => {
+           console.error("Error:", e);
+           // ถ้าส่งไม่ผ่าน ก็ควรเอาเบลอออกด้วย (กันค้าง)
+           // document.body.classList.remove("follow-popup-open"); 
+       });
+
+     } catch (err) {
+       console.error("Processing Error:", err);
+     }
+   }
+
+   function closePopup() {
+     const popup = document.getElementById("successPopup");
+     const btn = document.getElementById("realSubmitBtn");
+
+     popup.style.opacity = '0';
+     setTimeout(() => {
+       popup.style.display = "none";
+       popup.style.opacity = '1';
+       
+       // 🔥 [จุดสำคัญ] สั่งปิดโหมดเบลอเมื่อปิด Popup
+       document.body.classList.remove("follow-popup-open"); 
+     }, 300);
+
+     btn.classList.remove("loading-mode");
+     btn.innerHTML = 'ยืนยันการสมัคร';
+     btn.style.background = 'linear-gradient(135deg, #d50000, #ff2a1f)';
+   }
+
+   function closePopup() {
+     const popup = document.getElementById("successPopup");
+     const btn = document.getElementById("realSubmitBtn");
+
+     // ปิด popup
+     popup.style.opacity = '0';
+     setTimeout(() => {
+       popup.style.display = "none";
+       popup.style.opacity = '1';
+       
+       // 🔥 [เพิ่มตรงนี้] เอาคลาสเบลอออกเมื่อปิด Popup
+       document.body.classList.remove("follow-popup-open"); 
+     }, 300);
+
+     // 🔥 รีเซ็ตปุ่ม submit กลับสภาพปกติ
+     btn.classList.remove("loading-mode");
+     btn.innerHTML = 'ยืนยันการสมัคร';
+
+     // ถ้าอยากให้เป็นสีแดง/ส้มชัวร์
+     btn.style.background = 'linear-gradient(135deg, #d50000, #ff2a1f)';
+   }
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+   function checkSubmit() {
+  const btn = document.getElementById("realSubmitBtn");
+  if (btn.classList.contains("loading-mode")) return;
+
+  // 🔒 ยังไม่ปลดล็อก → เปิด popup
+  if (btn.classList.contains("is-locked")) {
+    openFollowPopup();
+    return;
+  }
+
+  // ✅ ปลดล็อกแล้ว → ส่งข้อมูลจริง
+  sendToGoogleSheet();
+}
+
+
+    
+
+    function unlockSystem() {
+  const followBtn = document.getElementById("followBtn");
+
+  followBtn.innerHTML = '<i class="fa-solid fa-check"></i> ติดตามแล้ว';
+  followBtn.style.background = "#06c755";
+  followBtn.style.color = "#fff";
+
+  // 🔥 หยุดเอฟเฟกต์ขอบแดง
+  followBtn.classList.remove("need-follow");
+  followBtn.style.border = "none";
+  followBtn.style.boxShadow = "0 0 12px rgba(6,199,85,0.4)";
+
+  const statusBar = document.getElementById("statusBar");
+  statusBar.classList.add("unlocked");
+  statusBar.innerHTML =
+    '<i class="fa-solid fa-circle-check"></i> พร้อมใช้งาน! กรอกข้อมูลได้เลย';
+
+  const submitBtn = document.getElementById("realSubmitBtn");
+  submitBtn.classList.remove("is-locked");
+  submitBtn.innerHTML = 'ยืนยันการสมัคร';
+}
+
+    function showErrorPopup(message) {
+      const popup = document.createElement('div');
+      popup.className = 'error-popup';
+      popup.innerHTML = `<div class="error-box"><i class="fa-solid fa-circle-exclamation" style="font-size:20px;"></i> <span>${message}</span></div>`;
+      document.body.appendChild(popup);
+      setTimeout(() => {
+        popup.style.opacity = '0';
+        setTimeout(() => popup.remove(), 300);
+      }, 3000);
+    }
+
+   function closePopup() {
+  const popup = document.getElementById("successPopup");
+  const btn = document.getElementById("realSubmitBtn");
+  
+
+  // ปิด popup
+  popup.style.opacity = '0';
+  setTimeout(() => {
+    popup.style.display = "none";
+    popup.style.opacity = '1';
+  }, 300);
+
+  // 🔥 รีเซ็ตปุ่ม submit กลับสภาพปกติ
+  btn.classList.remove("loading-mode");
+  btn.innerHTML = 'ยืนยันการสมัคร';
+
+  // ถ้าอยากให้เป็นสีแดง/ส้มชัวร์
+  btn.style.background = 'linear-gradient(135deg, #d50000, #ff2a1f)';
+}
+
+
+    function toggleExampleAnimated() {
+      document.getElementById("exampleContainer").classList.toggle("show");
+    }
+
+    /* Event Listeners */
+    document.getElementById("slip").addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+      
+      document.getElementById("fileName").innerText = file.name;
+      document.getElementById("uploadText").innerHTML = '<i class="fa-solid fa-check" style="color:#4aff85; font-size: 24px;"></i> เลือกรูปเรียบร้อย';
+      document.getElementById("uploadText").style.borderColor = "#4aff85";
+      document.getElementById("uploadText").style.background = "rgba(74, 255, 133, 0.1)";
+      
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("previewImg").src = e.target.result;
+        document.getElementById("slipPreview").style.display = "flex";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.querySelectorAll(".plan-card").forEach(card => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        document.getElementById("plan").value = card.dataset.plan;
+      });
+    });
+
+    document.getElementById("successPopup").addEventListener("click", function(e) {
+      if (e.target === this) closePopup();
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const followBtn = document.getElementById("followBtn");
+  followBtn.classList.add("need-follow");
+});
+// คลิกพื้นหลัง (overlay) → ปิด popup
+document.getElementById("successPopup").addEventListener("click", function () {
+  closePopup();
+});
+
+// คลิกในกล่อง popup → ไม่ให้ปิด
+document.querySelector("#successPopup .popup-box")
+  .addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
+
+function openFollowPopup() {
+  document.getElementById("followPopup").style.display = "flex";
+  document.body.classList.add("follow-popup-open");
+}
+
+function closeFollowPopup() {
+  document.getElementById("followPopup").style.display = "none";
+  document.body.classList.remove("follow-popup-open");
+}
+
+
+function scrollToFollow() {
+  closeFollowPopup();
+  const followBtn = document.getElementById("followBtn");
+  followBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+  followBtn.classList.add("shake-attention");
+  setTimeout(() => followBtn.classList.remove("shake-attention"), 1000);
+}
+
+  </script>
+
+
+
+  
+
+  <script src="js/navbar.js"></script>
+</body>
+</html>

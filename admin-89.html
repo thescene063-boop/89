@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คำถามที่พบบ่อย | The Scene 89</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS กลาง -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      padding-top: 80px;
+      font-family: 'Prompt', sans-serif;
+      color: #fff;
+      background-color: #141414; /* เพิ่มสีพื้นหลังเผื่อไว้ */
+      margin: 0;
+    }
+
+    /* ===== LOGIN ===== */
+    #loginScreen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, #1a1a1a, #000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.06);
+      padding: 32px;
+      border-radius: 22px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+
+    .login-box h1 { margin-bottom: 10px; margin-top: 0; }
+    .login-box p { opacity: .7; margin-bottom: 24px; }
+
+    .login-box input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      margin-bottom: 16px;
+      text-align: center;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: none;
+      background: #e50914;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .login-error {
+      margin-top: 12px;
+      color: #ff5c5c;
+      font-size: 14px;
+      display: none;
+    }
+
+    /* ===== ADMIN ===== */
+    #adminScreen { display: none; }
+
+    .admin-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    h1 { text-align: center; margin-bottom: 30px; }
+
+    .admin-panel {
+      max-width: 520px;
+      margin: 0 auto 50px;
+      background: rgba(255,255,255,0.06);
+      padding: 24px;
+      border-radius: 20px;
+    }
+
+    .admin-panel input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      border: none;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.9);
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      background: #e50914;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .primary-btn:hover { background: #f40612; }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .movie-card {
+      background: rgba(255,255,255,0.07);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    
+    .movie-card:hover { transform: translateY(-5px); }
+
+    .movie-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .movie-title {
+      padding: 12px;
+      text-align: center;
+      min-height: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 30, 30, 0.9);
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .edit-btn {
+      display: block;
+      margin: 0 auto 15px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+    .edit-btn:hover { background: #fff; color: #000; }
+
+    /* Edit Mode Inputs */
+    .edit-input {
+        width: 90%;
+        padding: 6px;
+        border-radius: 8px;
+        border: none;
+        margin-bottom: 6px;
+        font-family: 'Prompt', sans-serif;
+    }
+    .save-btn {
+        padding: 5px 14px;
+        border-radius: 10px;
+        border: none;
+        background: #1db954;
+        color: #fff;
+        cursor: pointer;
+        font-family: 'Prompt', sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 Admin Login</h1>
+    <p>The Scene 89</p>
+
+    <input type="password" id="adminPass" placeholder="กรอกรหัสผ่าน (1234)"
+      onkeydown="if(event.key==='Enter') login()">
+
+    <button onclick="login()">เข้าสู่ระบบ</button>
+    <div class="login-error" id="loginError">รหัสผ่านไม่ถูกต้อง</div>
+  </div>
+</div>
+
+<div id="adminScreen">
+  <div id="navbar"></div> <div class="admin-container">
+    <h1>Admin : จัดการหนัง</h1>
+
+    <div class="admin-panel">
+      <input id="searchInput" placeholder="🔍 ค้นหาชื่อหนัง..." oninput="searchMovie()">
+      <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+      <input id="titleInput" placeholder="ชื่อหนัง">
+      <input id="posterInput" placeholder="ลิงก์รูป (URL)">
+      <input id="linkInput" placeholder="ลิงก์ X / ดูหนัง">
+      <button class="primary-btn" id="addBtn">เพิ่มหนัง</button>
+      <button class="primary-btn" 
+      
+        style="margin-top:10px; background:#b00020;"
+        id="deleteAllBtn">
+  🗑 ลบหนังทั้งหมด
+
+  <button class="primary-btn"
+        style="margin-top:10px; background:#530007;"
+        id="deleteSelectedBtn">
+  🗑 ลบหนังที่เลือก
+</button>
+</button>
+    </div>
+
+    <div class="admin-grid" id="adminGrid">
+        </div>
+  </div>
+</div>
+
+<script>
+  // --- AUTH SYSTEM (Client Side) ---
+  const ADMIN_PASS = "1234";
+  const loginScreen = document.getElementById("loginScreen");
+  const adminScreen = document.getElementById("adminScreen");
+  const errorBox = document.getElementById("loginError");
+  const passInput = document.getElementById("adminPass");
+
+  function checkSession() {
+    if (sessionStorage.getItem("adminAuth") === "true") {
+        loginScreen.style.display = "none";
+        adminScreen.style.display = "block";
+        loadMovies(); // โหลดหนังเมื่อ Login ผ่านแล้วเท่านั้น
+    }
+  }
+
+  function login() {
+    if (passInput.value === ADMIN_PASS) {
+      sessionStorage.setItem("adminAuth", "true");
+      checkSession();
+    } else {
+      errorBox.style.display = "block";
+    }
+  }
+  
+  // เรียกตรวจสอบตอนเปิดเว็บ
+  checkSession();
+</script>
+
+<script src="js/navbar.js"></script>
+
+<script type="module">
+  import { db } from "./js/firebase.js";
+  import { 
+    collection, 
+    getDocs, 
+    addDoc, 
+    deleteDoc, 
+    updateDoc, 
+    doc 
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+// 🔥 ลบหนังทั้งหมด
+document.getElementById("deleteAllBtn").onclick = async () => {
+    const confirm1 = confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบหนังทั้งหมด?");
+    if (!confirm1) return;
+
+    const confirm2 = confirm("❗ การกระทำนี้ลบถาวร ไม่สามารถกู้คืนได้");
+    if (!confirm2) return;
+
+    try {
+        const snap = await getDocs(collection(db, "movies"));
+
+        if (snap.empty) {
+            alert("ไม่มีหนังให้ลบ");
+            return;
+        }
+
+        // ลบทีละ document
+        const promises = [];
+        snap.forEach(d => {
+            promises.push(deleteDoc(doc(db, "movies", d.id)));
+        });
+
+        await Promise.all(promises);
+
+        // เคลียร์หน้า
+        document.getElementById("adminGrid").innerHTML =
+            '<p style="text-align:center;width:100%;">🧹 ลบหนังทั้งหมดเรียบร้อย</p>';
+
+        alert("✅ ลบหนังทั้งหมดสำเร็จ");
+    } catch (err) {
+        console.error(err);
+        alert("❌ เกิดข้อผิดพลาดในการลบ");
+    }
+};
+
+  // ประกาศตัวแปร Global ให้ Window เรียกใช้ได้
+  window.loadMovies = async () => {
+    const grid = document.getElementById("adminGrid");
+    grid.innerHTML = '<p style="text-align:center; width:100%;">กำลังโหลดข้อมูล...</p>';
+    
+    try {
+        const snap = await getDocs(collection(db, "movies"));
+        
+        // 1. ดึงข้อมูลมาเก็บใส่ Array ก่อน เพื่อจะทำการเรียงลำดับ
+        let movies = [];
+        snap.forEach(d => {
+            movies.push({ id: d.id, ...d.data() });
+        });
+
+        // 2. สั่งเรียง (Sort) ตามเวลาที่สร้าง (createdAt) จาก มาก -> น้อย (ใหม่ -> เก่า)
+        // (ถ้าหนังเก่าไม่มี field createdAt มันจะไปกองอยู่ล่างสุดให้เอง)
+        movies.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+        grid.innerHTML = ""; // เคลียร์ Loading
+
+        // 3. วนลูปแสดงผล (คราวนี้ข้อมูลเรียงมาแล้ว ใช้ appendChild ต่อตูดไปเรื่อยๆ ได้เลย)
+        movies.forEach(m => {
+            createMovieCard(m.id, m, false);
+        });
+
+    } catch (e) {
+        console.error("Error loading movies:", e);
+        grid.innerHTML = '<p style="color:red; text-align:center;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+    }
+  };
+
+  function createMovieCard(id, data, insertTop = false) {
+    const grid = document.getElementById("adminGrid");
+    
+    const card = document.createElement("div");
+    card.className = "movie-card";
+    card.dataset.id = id; // เก็บ id ไว้ใช้ตอนลบ
+    card.dataset.title = (data.title || "").toLowerCase(); 
+// checkbox เลือก
+const checkbox = document.createElement("input");
+checkbox.type = "checkbox";
+checkbox.className = "select-movie";
+checkbox.style.position = "absolute";
+checkbox.style.top = "10px";
+checkbox.style.right = "10px";
+checkbox.style.transform = "scale(1.4)";
+checkbox.style.zIndex = "3";
+
+card.appendChild(checkbox);
+
+    // ปุ่มลบ
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-btn";
+    delBtn.textContent = "ลบ";
+    delBtn.onclick = async () => {
+        if(confirm(`ยืนยันการลบ "${data.title}"?`)) {
+            await deleteDoc(doc(db, "movies", id));
+            card.remove(); 
+        }
+    };
+
+    // รูปภาพ
+    const img = document.createElement("img");
+    img.src = data.poster;
+    img.onerror = () => { img.src = 'https://via.placeholder.com/300x400?text=No+Image'; };
+
+    // ชื่อเรื่อง
+    const titleDiv = document.createElement("div");
+    titleDiv.className = "movie-title";
+    titleDiv.textContent = data.title;
+
+    // ปุ่มแก้ไข
+    const editBtn = document.createElement("button");
+    editBtn.className = "edit-btn";
+    editBtn.textContent = "✏️ แก้ไข";
+    editBtn.onclick = () => enableEditMode(id, data, titleDiv, card);
+
+    card.appendChild(delBtn);
+    card.appendChild(img);
+    card.appendChild(titleDiv);
+    card.appendChild(editBtn);
+    
+    // ถ้าเป็นการเพิ่มใหม่ (insertTop = true) ให้แทรกบนสุด
+    // แต่ถ้าโหลดปกติ ข้อมูลจะถูกเรียงมาแล้ว ให้ต่อท้ายได้เลย
+    if (insertTop) {
+        grid.prepend(card); 
+    } else {
+        grid.appendChild(card); 
+    }
+  }
+
+  // ฟังก์ชันแก้ไข (เหมือนเดิม)
+  function enableEditMode(id, currentData, container, cardElement) {
+    container.innerHTML = ""; 
+
+    const iTitle = document.createElement("input");
+    iTitle.value = currentData.title;
+    iTitle.className = "edit-input";
+    iTitle.placeholder = "ชื่อหนัง";
+
+    const iPoster = document.createElement("input");
+    iPoster.value = currentData.poster;
+    iPoster.className = "edit-input";
+    iPoster.placeholder = "ลิงก์รูป";
+
+    const iLink = document.createElement("input");
+    iLink.value = currentData.link;
+    iLink.className = "edit-input";
+    iLink.placeholder = "ลิงก์หนัง";
+
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "บันทึก";
+    saveBtn.className = "save-btn";
+    
+    saveBtn.onclick = async () => {
+       const newData = {
+    title: iTitle.value.trim(),
+    poster: convertDriveImage(iPoster.value.trim()),
+    link: iLink.value.trim()
+};
+
+        if(!newData.title || !newData.poster) {
+            alert("กรุณากรอกชื่อหนังและรูปภาพ");
+            return;
+        }
+
+        saveBtn.textContent = "⏳...";
+        await updateDoc(doc(db, "movies", id), newData);
+        
+        container.innerHTML = newData.title; 
+        cardElement.querySelector("img").src = newData.poster;
+        cardElement.dataset.title = newData.title.toLowerCase(); 
+        
+        const newEditBtn = cardElement.querySelector(".edit-btn");
+        newEditBtn.onclick = () => enableEditMode(id, newData, container, cardElement);
+    };
+
+    container.appendChild(iTitle);
+    container.appendChild(iPoster);
+    container.appendChild(iLink);
+    container.appendChild(saveBtn);
+  }
+
+  // ฟังก์ชันเพิ่มหนัง
+  document.getElementById("addBtn").onclick = async () => {
+    const title = document.getElementById("titleInput").value;
+   const poster = convertDriveImage(
+    document.getElementById("posterInput").value
+);
+
+    const link = document.getElementById("linkInput").value;
+
+    if(!title || !poster) {
+        alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+        return;
+    }
+
+    const btn = document.getElementById("addBtn");
+    btn.textContent = "กำลังเพิ่ม...";
+    btn.disabled = true;
+
+    try {
+        // 🔥 จุดสำคัญ: บันทึกเวลาปัจจุบัน (Date.now()) ลงไปด้วย
+        const newItem = { 
+            title, 
+            poster, 
+            link,
+            createdAt: Date.now() // เก็บเวลาที่เป็นตัวเลข เพื่อเอาไปเรียง
+        };
+
+        const docRef = await addDoc(collection(db, "movies"), newItem);
+        
+        // เพิ่มเข้าหน้าจอทันที (แทรกบนสุด)
+        createMovieCard(docRef.id, newItem, true);
+        
+        document.getElementById("titleInput").value = "";
+        document.getElementById("posterInput").value = "";
+        document.getElementById("linkInput").value = "";
+    } catch(e) {
+        console.error(e);
+        alert("เพิ่มข้อมูลไม่สำเร็จ");
+    }
+    
+    btn.textContent = "เพิ่มหนัง";
+    btn.disabled = false;
+  };
+
+  window.searchMovie = () => {
+    const k = document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".movie-card").forEach(c => {
+      c.style.display = c.dataset.title.includes(k) ? "block" : "none";
+    });
+  };
+
+  if(sessionStorage.getItem("adminAuth") === "true") {
+      loadMovies();
+  }
+
+  // 🔁 แปลง Google Drive URL → lh3.googleusercontent
+function convertDriveImage(url) {
+    if (!url) return url;
+
+    // ถ้าเป็น lh3 อยู่แล้ว ไม่ต้องแปลง
+    if (url.includes("lh3.googleusercontent.com/d/")) {
+        return url.trim();
+    }
+
+    let fileId = "";
+
+    // แบบ /file/d/FILE_ID/
+    const match1 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
+    // แบบ ?id=FILE_ID
+    const match2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+
+    if (match1) fileId = match1[1];
+    if (match2) fileId = match2[1];
+
+    if (fileId) {
+        return `https://lh3.googleusercontent.com/d/${fileId}`;
+    }
+
+    // ไม่ใช่ Drive → ส่งกลับเหมือนเดิม
+    return url.trim();
+}
+// 🗑 ลบหนังที่เลือก
+document.getElementById("deleteSelectedBtn").onclick = async () => {
+    const selected = document.querySelectorAll(".select-movie:checked");
+
+    if (selected.length === 0) {
+        alert("กรุณาเลือกหนังที่ต้องการลบ");
+        return;
+    }
+
+    if (!confirm(`ยืนยันลบหนัง ${selected.length} เรื่อง?`)) return;
+
+    try {
+        const promises = [];
+
+        selected.forEach(cb => {
+            const card = cb.closest(".movie-card");
+            const id = card.dataset.id;
+            promises.push(deleteDoc(doc(db, "movies", id)));
+        });
+
+        await Promise.all(promises);
+
+        // ลบออกจากหน้าเว็บ
+        selected.forEach(cb => cb.closest(".movie-card").remove());
+
+        alert("✅ ลบหนังที่เลือกเรียบร้อย");
+    } catch (err) {
+        console.error(err);
+        alert("❌ เกิดข้อผิดพลาดในการลบ");
+    }
+};
+
+</script>
+  <!-- โหลด Navbar -->
+  <script src="js/navbar.js"></script>
+</body>
+</html>
