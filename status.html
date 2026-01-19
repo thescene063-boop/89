@@ -391,6 +391,146 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 200, 81, 0.6);
 }
+
+/* =========================================
+   RESPONSIVE : STATUS PAGE
+   ========================================= */
+
+/* กันล้นจอ */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* -----------------------------
+   Desktop (จอใหญ่)
+------------------------------ */
+@media (min-width: 1024px) {
+  .status-card {
+    max-width: 520px;
+    padding: 42px 40px;
+    margin: 80px auto;
+  }
+
+  .status-card h1 {
+    font-size: 28px;
+  }
+
+  .status-btn {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  .renew-link,
+  .btn-go-movie,
+  .btn-x-static {
+    font-size: 16px;
+    padding: 16px;
+  }
+}
+
+/* -----------------------------
+   Tablet
+------------------------------ */
+@media (max-width: 1023px) {
+  .status-card {
+    max-width: 460px;
+    padding: 36px 28px;
+  }
+}
+
+/* -----------------------------
+   Mobile
+------------------------------ */
+@media (max-width: 600px) {
+
+  body {
+    padding-bottom: 80px;
+  }
+
+  .top-bar-x {
+    flex-wrap: wrap;
+    text-align: center;
+    font-size: 13px;
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .x-follow-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .status-card {
+    width: calc(100% - 24px); /* 👈 กันติดขอบ */
+    margin: 30px auto;
+    padding: 26px 20px;
+    border-radius: 22px;
+  }
+
+  .status-card h1 {
+    font-size: 22px;
+  }
+
+  .status-sub {
+    font-size: 13px;
+  }
+
+  .status-check input {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .status-btn {
+    font-size: 15px;
+    padding: 14px;
+  }
+
+  .status-result {
+    font-size: 14px;
+  }
+
+  .expire-row {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .countdown-box {
+    flex-direction: row;
+    padding: 14px;
+  }
+
+  .time-col .num {
+    font-size: 22px;
+  }
+
+  .renew-link,
+  .btn-go-movie,
+  .btn-x-static {
+    font-size: 15px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .follow-x-alert {
+    padding: 14px;
+    font-size: 14px;
+  }
+}
+
+/* -----------------------------
+   iOS Safe Area (กันติ่ง)
+------------------------------ */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
 </style>
 </head>
 
